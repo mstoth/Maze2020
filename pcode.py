@@ -1,0 +1,10 @@
+import turtle
+s=turtle.Screen()
+s.setup(400,400)
+s.bgcolor('blue')
+t=turtle.Turtle()
+t.penup()
+t.goto(-190,190)
+t.shape('square')
+t.color('white')
+t.stamp()
