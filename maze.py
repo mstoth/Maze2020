@@ -2,20 +2,21 @@ import unittest
 import turtle
 
 class MazeTests(unittest.TestCase):
-    def testItExists(self):
-        m=Maze() # this should fail
+    def setUp(self):
+        self.m=Maze()
     def testScreen(self):
-        m=Maze()
-        self.assertTrue(type(m.s)==turtle._Screen,"No Screen!")
+        self.assertTrue(type(self.m.s)==turtle._Screen,"No Screen!")
     def testTurtle(self):
-        m=Maze()
-        self.assertTrue(type(m.turtle)==turtle.Turtle)
+        self.assertTrue(type(self.m.turtle)==turtle.Turtle)
+    def testBackground(self):
+        self.assertTrue(self.m.s.bgcolor()=='blue')
 
 class Maze():
     """ This class creates a random maze """
     def __init__(self):
         self.s=turtle.getscreen()
         self.turtle = turtle.Turtle()
-
+        self.s.bgcolor('blue')
+        
 if __name__ == "__main__":
     unittest.main()
