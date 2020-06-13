@@ -15,6 +15,10 @@ class MazeTests(unittest.TestCase):
         self.assertTrue(self.m.s.window_height()==SIZE)
     def testMatrixSize(self):
         self.assertTrue(len(self.m.matrix)==SIZE/20)
+    def testReset(self):
+        self.m.reset()
+        self.assertTrue(0,self.m.matrix[0][0])
+        self.assertTrue(self.m.turtle.pos()==(-(SIZE/2-10),SIZE/2-10))
 
 class Maze():
     """ This class creates a random maze """
@@ -23,7 +27,17 @@ class Maze():
         self.turtle = turtle.Turtle()
         self.s.bgcolor('blue')
         self.s.setup(SIZE,SIZE)
+        self.turtle.penup()
         self.matrix=[[1 for i in range(int(SIZE/20))] for i in range(int(SIZE/20))]
-        
+
+    def reset(self):
+        self.turtle.goto(-(SIZE/2-10),SIZE/2-10)
+        self.matrix=[[1 for i in range(int(SIZE/20))] for i in range(int(SIZE/20))]
+        self.s.bgcolor('blue')
+        self.turtle.shape('square')
+        self.turtle.color('white')
+        self.turtle.stamp()
+        self.matrix[0][0]=0
+
 if __name__ == "__main__":
     unittest.main()
