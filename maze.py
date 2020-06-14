@@ -1,6 +1,7 @@
 import unittest
 import turtle
 SIZE=400
+
 class MazeTests(unittest.TestCase):
     def setUp(self):
         self.m=Maze()
