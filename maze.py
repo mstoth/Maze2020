@@ -30,6 +30,14 @@ class MazeTests(unittest.TestCase):
         self.m.dig(EAST)
         self.assertTrue( self.m.getMatrixValueAt(self.m.turtle.position())==0)
         self.assertTrue( self.m.turtle.position() == (-170,190))
+        self.m.reset()
+        self.assertTrue( self.m.dig(WEST) == (-190,190))
+        self.m.reset()
+        self.m.dig(EAST)
+        self.m.dig(SOUTH)
+        r=self.m.dig(WEST)
+        self.assertTrue(r == (-190,170),"r is " + str(r))
+
 
 class Maze():
     """ This class creates a random maze """
@@ -52,9 +60,18 @@ class Maze():
         self.matrix[0][0]=0
     def dig(self,dir):
         if dir == EAST:
-            self.turtle.goto(self.turtle.position()[0]+20,self.turtle.position()[1])
-            self.setMatrixValueAt(self.turtle.position(),0)
-            return self.turtle.position()
+            if self.turtle.position()[0]<190:
+                 self.turtle.goto(self.turtle.position()[0]+20,self.turtle.position()[1])
+                 self.setMatrixValueAt(self.turtle.position(),0)
+        elif dir == SOUTH:
+            if self.turtle.position()[1]>-190:
+                self.turtle.goto(self.turtle.position()[0],self.turtle.position()[1]-20)
+                self.setMatrixValueAt(self.turtle.position(),0)
+        elif dir ==  WEST:
+            if self.turtle.position()[0]>-190:
+                self.turtle.goto(self.turtle.position()[0]-20,self.turtle.position()[1])
+                self.setMatrixValueAt(self.turtle.position(),0)
+        return self.turtle.position()
         
     def getMatrixValueAt(self,pos):
         x=int((pos[0]+200)/20)
