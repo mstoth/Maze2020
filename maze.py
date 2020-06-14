@@ -1,5 +1,6 @@
 import unittest
 import turtle
+import random
 SIZE=400
 EAST=0;NORTH=1;WEST=2;SOUTH=3
 INVALID = -1
@@ -74,19 +75,29 @@ class MazeTests(unittest.TestCase):
         r=self.m.dig(SOUTH)
         self.assertTrue( r==(-190,-170),"got " + str(r))
     def testNeighbors(self):
-        self.assertTrue( self.m.neighbors()==[-1,1,1,-1])
         r=self.m.neighbors()
-        self.assertTrue( (r[0]==INVALID and r[1]==WALL and
-                          r[2]==WALL and r[3]==INVALID),"got " + str(r))
+        self.assertTrue( (r[0][1]==INVALID and r[1][1]==WALL and
+                          r[2][1]==WALL and r[3][1]==INVALID),"got " + str(r))
         self.m.reset()
         self.m.turtle.goto(-170,170)
         r = self.m.neighbors()
-        self.assertTrue( (r[0]==INVALID and r[1]==WALL and
-                          r[2]==WALL and r[3]==WALL),"got " + str(r))
+        self.assertTrue( (r[0][1]==INVALID and r[1][1]==WALL and
+                          r[2][1]==WALL and r[3][1]==WALL),"got " + str(r))
         self.m.reset()
         self.m.turtle.goto(-150,150)
         r = self.m.neighbors()
-        self.assertTrue( (r[0]==WALL and r[1]==WALL and r[2]==WALL and r[3]==WALL), "got " + str(r))
+        self.assertTrue( (r[0][1]==WALL and r[1][1]==WALL and r[2][1]==WALL and r[3][1]==WALL), "got " + str(r))
+
+    def testMakeMaze(self):
+        self.m.makeMaze()
+        self.assertTrue( ((self.m.getMatrixValueAt((-170,190))==EMPTY and
+                           self.m.getMatrixValueAt((-150,190))==EMPTY) or  \
+       (self.m.getMatrixValueAt((-190,170))==EMPTY and
+        self.m.getMatrixValueAt((-190,150))==EMPTY)),"got " + \
+       str(self.m.getMatrixValueAt((-170,190))) + "," + \
+       str(self.m.getMatrixValueAt((-150,190))) + "," + \
+       str(self.m.getMatrixValueAt((-190,170))) + "," + \
+       str(self.m.getMatrixValueAt((-190,150))))
 
 
 class Maze():
@@ -94,13 +105,37 @@ class Maze():
     def __init__(self):
         self.reset()
 
+    def direction(self,pos1,pos2):
+        """ returns the direction from position 1 to position 2 """
+        if pos1[0]==pos2[0]:
+            if pos1[1]>pos2[1]: # North
+                return NORTH
+            else:
+                return SOUTH
+        else:
+            if pos2[0]>pos1[0]: # East
+                return EAST
+            else:
+                return WEST
+
+    def makeMaze(self):
+        n=self.neighbors()
+        while len(n)>0:
+            nchoice=random.choice(n)
+            n.remove(nchoice)
+            if nchoice[1]==WALL:
+                d=self.direction(self.turtle.position(),nchoice[0])
+                self.dig(d)
+                self.dig(d)
+                return
+
     def neighbors(self):
         p=self.turtle.position()
         r=[]
-        r.append(self.getMatrixValueAt((p[0],p[1]+40)))
-        r.append(self.getMatrixValueAt((p[0],p[1]-40)))
-        r.append(self.getMatrixValueAt((p[0]+40,p[1])))
-        r.append(self.getMatrixValueAt((p[0]-40,p[1])))
+        r.append([(p[0],p[1]+40),self.getMatrixValueAt((p[0],p[1]+40))])
+        r.append([(p[0],p[1]-40),self.getMatrixValueAt((p[0],p[1]-40))])
+        r.append([(p[0]+40,p[1]),self.getMatrixValueAt((p[0]+40,p[1]))])
+        r.append([(p[0]-40,p[1]),self.getMatrixValueAt((p[0]-40,p[1]))])
         return r
 
     def reset(self):
