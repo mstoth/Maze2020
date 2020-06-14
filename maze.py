@@ -43,6 +43,10 @@ class MazeTests(unittest.TestCase):
         self.m.dig(WEST)
         r=self.m.dig(NORTH)
         self.assertTrue( r == (-190,190), "should be at (-190,190) but got " + str(r))
+    def testNoBreakThrough(self):
+        self.m.setMatrixValueAt((-150,190),0)
+        r=self.m.dig(EAST)
+        assert r==(-190,190),"Not at Home position, got " + str(r)
 
 
 class Maze():
@@ -66,9 +70,9 @@ class Maze():
         self.matrix[0][0]=0
     def dig(self,dir):
         if dir == EAST:
-            if self.turtle.position()[0]<190:
-                 self.turtle.goto(self.turtle.position()[0]+20,self.turtle.position()[1])
-                 self.setMatrixValueAt(self.turtle.position(),0)
+            if self.getMatrixValueAt((self.turtle.position()[0]+40,self.turtle.position()[1]))>0:
+                self.turtle.goto(self.turtle.position()[0]+20,self.turtle.position()[1])
+                self.setMatrixValueAt(self.turtle.position(),0)
         elif dir == SOUTH:
             if self.turtle.position()[1]>-190:
                 self.turtle.goto(self.turtle.position()[0],self.turtle.position()[1]-20)
