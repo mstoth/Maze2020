@@ -37,6 +37,12 @@ class MazeTests(unittest.TestCase):
         self.m.dig(SOUTH)
         r=self.m.dig(WEST)
         self.assertTrue(r == (-190,170),"r is " + str(r))
+        self.m.reset()
+        self.m.dig(EAST)
+        self.m.dig(SOUTH)
+        self.m.dig(WEST)
+        r=self.m.dig(NORTH)
+        self.assertTrue( r == (-190,190), "should be at (-190,190) but got " + str(r))
 
 
 class Maze():
@@ -70,6 +76,10 @@ class Maze():
         elif dir ==  WEST:
             if self.turtle.position()[0]>-190:
                 self.turtle.goto(self.turtle.position()[0]-20,self.turtle.position()[1])
+                self.setMatrixValueAt(self.turtle.position(),0)
+        elif dir ==  NORTH:
+            if self.turtle.position()[1]<190:
+                self.turtle.goto(self.turtle.position()[0],self.turtle.position()[1]+20)
                 self.setMatrixValueAt(self.turtle.position(),0)
         return self.turtle.position()
         
