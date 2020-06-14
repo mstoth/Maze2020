@@ -11,26 +11,27 @@ class MazeTests(unittest.TestCase):
     def testBackground(self):
         self.assertTrue(self.m.s.bgcolor()=='blue')
     def testSize(self):
-        self.assertTrue(self.m.s.window_width()==SIZE)
-        self.assertTrue(self.m.s.window_height()==SIZE)
+        self.assertTrue(self.m.s.window_width==SIZE)
+        self.assertTrue(self.m.s.window_height==SIZE)
     def testMatrixSize(self):
         self.assertTrue(len(self.m.matrix)==SIZE/20)
     def testReset(self):
         self.m.reset()
-        self.assertTrue(0,self.m.matrix[0][0])
+        self.assertTrue(0==self.m.matrix[0][0])
         self.assertTrue(self.m.turtle.pos()==(-(SIZE/2-10),SIZE/2-10))
 
 class Maze():
     """ This class creates a random maze """
     def __init__(self):
-        self.s=turtle.getscreen()
-        self.turtle = turtle.Turtle()
-        self.s.bgcolor('blue')
-        self.s.setup(SIZE,SIZE)
-        self.turtle.penup()
-        self.matrix=[[1 for i in range(int(SIZE/20))] for i in range(int(SIZE/20))]
+        self.reset()
 
     def reset(self):
+        self.s=turtle.getscreen()
+        self.s.window_width=SIZE
+        self.s.window_height=SIZE
+        self.s.screensize(SIZE,SIZE)
+        self.turtle = turtle.Turtle()
+        self.turtle.penup()
         self.turtle.goto(-(SIZE/2-10),SIZE/2-10)
         self.matrix=[[1 for i in range(int(SIZE/20))] for i in range(int(SIZE/20))]
         self.s.bgcolor('blue')
