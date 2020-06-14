@@ -2,6 +2,11 @@ import unittest
 import turtle
 SIZE=400
 EAST=0;NORTH=1;WEST=2;SOUTH=3
+INVALID = -1
+EMPTY = 0
+WALL = 1
+VISITED = 2
+END = 3
 
 class MazeTests(unittest.TestCase):
     def setUp(self):
@@ -70,6 +75,19 @@ class MazeTests(unittest.TestCase):
         self.assertTrue( r==(-190,-170),"got " + str(r))
     def testNeighbors(self):
         self.assertTrue( self.m.neighbors()==[-1,1,1,-1])
+        r=self.m.neighbors()
+        self.assertTrue( (r[0]==INVALID and r[1]==WALL and
+                          r[2]==WALL and r[3]==INVALID),"got " + str(r))
+        self.m.reset()
+        self.m.turtle.goto(-170,170)
+        r = self.m.neighbors()
+        self.assertTrue( (r[0]==INVALID and r[1]==WALL and
+                          r[2]==WALL and r[3]==WALL),"got " + str(r))
+        self.m.reset()
+        self.m.turtle.goto(-150,150)
+        r = self.m.neighbors()
+        self.assertTrue( (r[0]==WALL and r[1]==WALL and r[2]==WALL and r[3]==WALL), "got " + str(r))
+
 
 class Maze():
     """ This class creates a random maze """
@@ -79,7 +97,6 @@ class Maze():
     def neighbors(self):
         p=self.turtle.position()
         r=[]
-        
         r.append(self.getMatrixValueAt((p[0],p[1]+40)))
         r.append(self.getMatrixValueAt((p[0],p[1]-40)))
         r.append(self.getMatrixValueAt((p[0]+40,p[1])))
