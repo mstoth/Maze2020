@@ -19,6 +19,11 @@ class MazeTests(unittest.TestCase):
         self.m.reset()
         self.assertTrue(0==self.m.matrix[0][0])
         self.assertTrue(self.m.turtle.pos()==(-(SIZE/2-10),SIZE/2-10))
+    def getMatrixValueAt(self,pos):
+        x=int((pos[0]+200)/20)
+        y=20-int((pos[1]+200)/20)-1
+        v=self.matrix[x][y]
+        return v
 
 class Maze():
     """ This class creates a random maze """
